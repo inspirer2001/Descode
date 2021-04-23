@@ -38,7 +38,7 @@ def net1(request):
 def sdes(request):
     if request.method=='POST' and 'net3' in request.POST:
      yourForm= request.POST.dict()
-     number_rounds = yourForm.get("nr")
+     number_rounds = yourForm.get("nr")#to get the number of rounds from html forms
      halfwidth=yourForm.get("hw")
      plain_text=yourForm.get("pt")
      key=yourForm.get("key")
@@ -55,16 +55,16 @@ def sdes(request):
      plain_text=text_hex(plain_text)
      plain_text=hex_bin(plain_text)
      key=key_preprocessor(key,halfwidth)
-     key,_=round_keys_generator(key,number_rounds,halfwidth)
-     plain_text=plaintext_preprocessor(plain_text,halfwidth)
+     key,_=round_keys_generator(key,number_rounds,halfwidth)#for generating the round key
+     plain_text=plaintext_preprocessor(plain_text,halfwidth)#for converting the plain text into 2*halfwidth and apply padding if necessary
      l,m=des_encryption(plain_text,key,number_rounds,halfwidth)
      m=merge_round_ciphertext(m)
      p=hex_bin(l)
      y=bin_text(p)
-     return render(request,'project1/net5.html',{"val":l,"val1":k,"val2":d,"val3":s,"val4":key1,"val5":p,"val6":m,"val20":y})
+     return render(request,'project1/net5.html',{"val":l,"val1":k,"val2":d,"val3":s,"val4":key1,"val5":p,"val6":m,"val20":y})#to render the different values on the page.
     else:
      return render(request,'project1/net5.html',{})
-
+# this is form weak key effect.
 def wkey(request):
     if request.method=='POST' and 'nt' in request.POST:
      yourForm= request.POST.dict()
@@ -80,7 +80,7 @@ def wkey(request):
      return render(request,'project1/wkey.html',{"val25":key1,"val26":hkey,"val27":number_rounds})
     else:
      return render(request,'project1/wkey.html',{})
-
+#this is for avalanche effect
 def avl(request):
     if request.method=='POST' and 'ne' in request.POST:
      yourForm= request.POST.dict()
@@ -120,7 +120,7 @@ def avl(request):
      r,t=des_encryption(cplain_text,ckey,number_rounds,halfwidth)
      p=hex_bin(l)
      e=hex_bin(r)
-     u=calculate_diff(m,t)
+     u=calculate_diff(m,t)#claculating the difference in bits in each round in ciphertext.
      m=merge_round_ciphertext(m)
      t=merge_round_ciphertext(t)
      return render(request,'project1/avl.html',{"val":l,"val1":k,"val2":d,"val3":s,"val4":key1,"val5":p,"val6":m,"val8":cs,"val9":ckey1,"val10":r,"val11":e,"val12":t,"val13":u})
